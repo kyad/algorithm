@@ -1,0 +1,5 @@
+numpy==1.18.2
+scipy==1.4.1
+scikit-learn==0.22.2.post1
+Numba==0.48.0
+NetworkX==2.4
