@@ -19,6 +19,25 @@ template<class T> ostream& operator<<(ostream& os, const vector<vector<T> > &v) 
   return os;
 }
 
+// 2d-matrix (C)
+#include <iomanip>
+void print_mat(int h, int w, long long a[][2000]) {
+  const int fmtw = 4;
+  for (int j = 0; j < fmtw + 1; j++) {
+    cout << ' ';
+  }
+  for (int j = 0; j < w; j++) {
+    cout << ' ' << right << setw(fmtw) << j;
+  }
+  cout << endl;
+  for (int i = 0; i < h; i++) {
+    cout << right << setw(fmtw) << i << " [";
+    for (int j = 0; j < w; j++) {
+      cout << right << setw(fmtw) << a[i][j] << (j == w - 1 ? "]\n" : " ");
+    }
+  }
+}
+
 // multiset
 template<class T> ostream& operator<<(ostream& os, const multiset<T> &ms) {
   for (typename multiset<T>::iterator it = ms.begin(); it != ms.end(); it++) {
