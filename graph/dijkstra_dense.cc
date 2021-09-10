@@ -1,11 +1,14 @@
+// https://atcoder.jp/contests/joi2008yo/tasks/joi2008yo_f
 // https://github.com/drken1215/book_algorithm_solution/blob/master/codes/chap14/code_14_3.cpp
 
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
+
+const int INF = 1000001;
 
 // Dijkstra's algorithm for dense graph (O|V|^2)
 vector<int> dijkstra_dense(vector<vector<pair<int, int> > > graph, int start) {
-  const int INF = 1000000000;
   int N = (int)graph.size();
   vector<bool> used(N, false);
   vector<int> dist(N, INF);
@@ -26,8 +29,30 @@ vector<int> dijkstra_dense(vector<vector<pair<int, int> > > graph, int start) {
       if (dist[graph[dist_min_idx][e].first] > dist_min + graph[dist_min_idx][e].second) {
         dist[graph[dist_min_idx][e].first] = dist_min + graph[dist_min_idx][e].second;
       }
-      used[dist_in_idx] = 0;
     }
+    used[dist_min_idx] = true;
   }
   return dist;
+}
+
+int main() {
+  int n, k;
+  cin >> n >> k;
+  vector<vector<pair<int, int> > > graph(n);
+  for (int i = 0; i < k; i++) {
+    int q;
+    cin >> q;
+    if (q == 0) {
+      int a, b;
+      cin >> a >> b;
+      vector<int> dist = dijkstra_dense(graph, a - 1);
+      cout << (dist[b - 1] < INF ? dist[b - 1] : -1) << endl;
+    } else {
+      int c, d, e;
+      cin >> c >> d >> e;
+      graph[c - 1].push_back(make_pair(d - 1, e));
+      graph[d - 1].push_back(make_pair(c - 1, e));
+    }
+  }
+  return 0;
 }
