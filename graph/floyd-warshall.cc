@@ -1,64 +1,37 @@
-// https://atcoder.jp/contests/abc143/tasks/abc143_e
+// https://atcoder.jp/contests/abc012/tasks/abc012_4
 // https://github.com/drken1215/book_algorithm_solution/blob/master/codes/chap14/code_14_5.cpp
 
+#include <algorithm>
 #include <iostream>
 #include <vector>
 using namespace std;
 
 int main() {
-  const long long INF = 1000000000LL * 300 + 1;
-  int N, M, L;
-  cin >> N >> M >> L;
-  vector<vector<long long> > dp(N, vector<long long>(N, INF));
+  const int INF = 1000 * 299 + 1;
+  int N, M;
+  cin >> N >> M;
+  vector<vector<int> > dist(N, vector<int>(N, INF));
   for (int n = 0; n < N; n++) {
-    dp[n][n] = 0;
+    dist[n][n] = 0;
   }
   for (int m = 0; m < M; m++) {
-    int A, B, C;
-    cin >> A >> B >> C;
-    dp[A - 1][B - 1] = C;
-    dp[B - 1][A - 1] = C;
+    int a, b, t;
+    cin >> a >> b >> t;
+    dist[a - 1][b - 1] = t;
+    dist[b - 1][a - 1] = t;
   }
   // Floyd-Warshall algorithm
   for (int k = 0; k < N; k++) {
     for (int i = 0; i < N; i++) {
       for (int j = 0; j < N; j++) {
-        dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j]);
+        dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
       }
     }
   }
-  bool exist_negative_cycle = false;
-  for (int n = 0; n < N; n++) {
-    if (dp[n][n] < 0) {
-      exist_negative_cycle = true;
-    }
-  }
-
-  vector<vector<long long> > dp2(N, vector<long long>(N, INF));
+  vector<int> temp(N);
   for (int i = 0; i < N; i++) {
-    for (int j = 0; j < N; j++) {
-      if (i == j) {
-        dp2[i][j] = 0;
-      } else if (dp[i][j] <= L) {
-        dp2[i][j] = 1;
-      }
-    }
+    temp.at(i) = *max_element(dist.at(i).begin(), dist.at(i).end());
   }
-  // Floyd-Warshall algorithm
-  for (int k = 0; k < N; k++) {
-    for (int i = 0; i < N; i++) {
-      for (int j = 0; j < N; j++) {
-        dp2[i][j] = min(dp2[i][j], dp2[i][k] + dp2[k][j]);
-      }
-    }
-  }
-
-  int Q;
-  cin >> Q;
-  for (int q = 0; q < Q; q++) {
-    int s, t;
-    cin >> s >> t;
-    cout << (dp2[s - 1][t - 1] == INF ? -1 : (dp2[s - 1][t - 1] - 1)) << endl;
-  }
+  cout << *min_element(temp.begin(), temp.end()) << endl;
   return 0;
 }
