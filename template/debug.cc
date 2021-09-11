@@ -28,6 +28,35 @@ template<class T> ostream& operator<<(ostream& os, const vector<vector<T> > &v) 
   return os;
 }
 
+// 2d-matrix for bit DP
+#include <bitset>
+#define BIT (8)
+template<class T> ostream& operator<<(ostream& os, const vector<vector<T> > &v) {
+  const long long INF = 1000000000000 * 16 + 1;
+  // Header
+  for (int i = BIT - 1; i >= 0; i--) {
+    cout << i;
+  }
+  cout << ' ';
+  for (size_t j = 0; j < v[0].size(); j++) {
+    cout << ' ' << j;
+  }
+  cout << endl;
+  // Main
+  for (size_t i = 0; i < v.size(); i++) {
+    os << bitset<BIT>(i) << " [";
+    for (size_t j = 0; j < v[i].size(); j++) {
+      if (v[i][j] >= INF) {
+        os << '_';
+      } else {
+        os << v[i][j];
+      }
+      os << (j == v[i].size() - 1 ? "]\n" : " ");
+    }
+  }
+  return os;
+}
+
 // 2d-matrix (C)
 #include <iomanip>
 void print_mat(int h, int w, long long a[][2000]) {
