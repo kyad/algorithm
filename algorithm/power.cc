@@ -9,7 +9,7 @@ int power(int m, int n, int mod) {
   long long a = m;
   long long ans = 1;
   while (n > 0) {
-    if (n & 1 == 1) {
+    if ((n & 1) == 1) {
       ans *= a;
       ans %= mod;
     }
