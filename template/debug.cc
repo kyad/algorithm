@@ -97,3 +97,23 @@ template<class T> ostream& operator<<(ostream& os, const deque<T> &dq) {
   }
   return os;
 }
+
+// stack
+#include <vector>
+template<class T> ostream& operator<<(ostream& os, const stack<T> &s) {
+  stack<T> _s(s);
+  vector<T> v;
+  while (!_s.empty()) {
+    v.push_back(_s.top());
+    _s.pop();
+  }
+  os << '[';
+  for (int i = v.size() - 1; i >= 0; i--) {
+    os << v[i];
+    if (i != 0) {
+      os << ' ';
+    }
+  }
+  os << ']';
+  return os;
+}
