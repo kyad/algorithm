@@ -1,3 +1,20 @@
+// bit
+#include <bitset>
+#define BIT (10)
+string bitstr(int b) {
+  return bitset<BIT>(b).to_string();
+}
+
+void print_bit(int b) {
+  // Header
+  for (int i = BIT - 1; i >= 0; i--) {
+    cout << i;
+  }
+  cout << endl;
+  // Main
+  cout << bitstr(b) << endl;
+}
+
 // pair
 template<class T1, class T2> ostream& operator<<(ostream& os, const pair<T1, T2> &p) {
   os << "(" << p.first << ", " << p.second << ")";
