@@ -93,6 +93,17 @@ void print_mat(int h, int w, long long a[][2000]) {
   }
 }
 
+// set
+template<class T> ostream& operator<<(ostream& os, const set<T> &s) {
+  for (typename set<T>::iterator it = s.begin(); it != s.end(); it++) {
+    os << *it;
+    if (it != prev(s.end())) {
+      os << ' ';
+    }
+  }
+  return os;
+}
+
 // multiset
 template<class T> ostream& operator<<(ostream& os, const multiset<T> &ms) {
   for (typename multiset<T>::iterator it = ms.begin(); it != ms.end(); it++) {
