@@ -31,8 +31,14 @@ template<class T1, class T2> ostream& operator<<(ostream& os, const pair<T1, T2>
 template<class T> ostream& operator<<(ostream& os, const vector<T> &v) {
   os << '[';
   for (size_t i = 0; i < v.size(); i++) {
-    os << v[i] << (i == v.size() - 1 ? ']' : ' ');
+    os << v[i];
+    if (i % 5 == 4) {
+      os << '\n';
+    } else if (i != v.size() - 1) {
+      os << ' ';
+    }
   }
+  os << ']';
   return os;
 }
 
