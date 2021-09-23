@@ -1,6 +1,12 @@
+#include <iostream>
+#include <queue>
+#include <set>
+#include <stack>
+using namespace std;
+
 // bit
 #include <bitset>
-#define BIT (10)
+#define BIT (8)
 string bitstr(int b) {
   return bitset<BIT>(b).to_string();
 }
@@ -48,7 +54,7 @@ template<class T> ostream& operator<<(ostream& os, const vector<vector<T> > &v) 
 // 2d-matrix for bit DP
 #include <bitset>
 #define BIT (8)
-template<class T> ostream& operator<<(ostream& os, const vector<vector<T> > &v) {
+template<class T> void print_bit_dp(const vector<vector<T> > &v) {
   const long long INF = 1000000000000 * 16 + 1;
   // Header
   for (int i = BIT - 1; i >= 0; i--) {
@@ -61,22 +67,21 @@ template<class T> ostream& operator<<(ostream& os, const vector<vector<T> > &v) 
   cout << endl;
   // Main
   for (size_t i = 0; i < v.size(); i++) {
-    os << bitset<BIT>(i) << " [";
+    cout << bitset<BIT>(i) << " [";
     for (size_t j = 0; j < v[i].size(); j++) {
       if (v[i][j] >= INF) {
-        os << '_';
+        cout << '_';
       } else {
-        os << v[i][j];
+        cout << v[i][j];
       }
-      os << (j == v[i].size() - 1 ? "]\n" : " ");
+      cout << (j == v[i].size() - 1 ? "]\n" : " ");
     }
   }
-  return os;
 }
 
 // 2d-matrix (C)
 #include <iomanip>
-void print_mat(int h, int w, long long a[][2000]) {
+template<class T> void print_mat(int h, int w, T a[][2000]) {
   const int fmtw = 4;
   for (int j = 0; j < fmtw + 1; j++) {
     cout << ' ';
@@ -95,34 +100,55 @@ void print_mat(int h, int w, long long a[][2000]) {
 
 // set
 template<class T> ostream& operator<<(ostream& os, const set<T> &s) {
+  os << '[';
   for (typename set<T>::iterator it = s.begin(); it != s.end(); it++) {
     os << *it;
     if (it != prev(s.end())) {
       os << ' ';
     }
   }
+  os << ']';
   return os;
 }
 
 // multiset
 template<class T> ostream& operator<<(ostream& os, const multiset<T> &ms) {
+  os << '[';
   for (typename multiset<T>::iterator it = ms.begin(); it != ms.end(); it++) {
     os << *it;
     if (it != prev(ms.end())) {
       os << ' ';
     }
   }
+  os << ']';
+  return os;
+}
+
+// queue
+template<class T> ostream& operator<<(ostream& os, const queue<T> &q) {
+  os << '[';
+  queue<T> _q(q);
+  while (!_q.empty()) {
+    os << _q.front();
+    _q.pop();
+    if (!_q.empty()) {
+      os << ' ';
+    }
+  }
+  os << ']';
   return os;
 }
 
 // deque
 template<class T> ostream& operator<<(ostream& os, const deque<T> &dq) {
+  os << '[';
   for (auto it = dq.begin(); it != dq.end(); it++) {
     os << *it;
     if (it != prev(dq.end())) {
       os << ' ';
     }
   }
+  os << ']';
   return os;
 }
 
@@ -144,4 +170,50 @@ template<class T> ostream& operator<<(ostream& os, const stack<T> &s) {
   }
   os << ']';
   return os;
+}
+
+int cmat[10][2000];
+int main() {
+  print_bit(5);
+  cout << make_pair(1, 2) << endl;
+  vector<int> v;
+  v.push_back(1);
+  v.push_back(2);
+  cout << "v=" << v << endl;
+  vector<vector<int> > mat(2, vector<int>(2));
+  mat[0][0] = 1;
+  mat[0][1] = 2;
+  mat[1][0] = 3;
+  mat[1][1] = 4;
+  cout << "mat=" << endl;
+  cout << mat << endl;
+  vector<vector<int> > bit_dp(1<<2, vector<int>(5, 1));
+  print_bit_dp(bit_dp);
+  cmat[0][0] = 1;
+  cmat[0][1] = 2;
+  cmat[1][0] = 3;
+  cmat[1][1] = 4;
+  print_mat(2, 2, cmat);
+  set<int> s;
+  s.insert(1);
+  s.insert(2);
+  cout << "s=" << s << endl;
+  multiset<int> ms;
+  ms.insert(1);
+  ms.insert(2);
+  ms.insert(2);
+  cout << "ms=" << ms << endl;
+  queue<int> q;
+  q.push(1);
+  q.push(2);
+  cout << "q=" << q << endl;
+  deque<int> dq;
+  dq.push_front(1);
+  dq.push_back(2);
+  cout << "dq=" << dq << endl;
+  stack<int> st;
+  st.push(1);
+  st.push(2);
+  cout << "st=" << st << endl;
+  return 0;
 }
