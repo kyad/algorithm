@@ -130,6 +130,21 @@ template<class T> ostream& operator<<(ostream& os, const multiset<T> &ms) {
   return os;
 }
 
+// map
+template<class T1, class T2> ostream& operator<<(ostream& os, const map<T1, T2> &m) {
+  os << '[';
+  size_t i = m.size();
+  for (typename map<T1, T2>::const_iterator it = m.begin(); it != m.end(); it++) {
+    os << '(' << it->first << " , " << it->second << ')';
+    if (i > 1) {
+      os << ' ';
+    }
+    i--;
+  }
+  os << ']';
+  return os;
+}
+
 // queue
 template<class T> ostream& operator<<(ostream& os, const queue<T> &q) {
   os << '[';
