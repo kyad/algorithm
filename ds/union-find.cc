@@ -2,7 +2,8 @@
 // https://github.com/drken1215/book_algorithm_solution/blob/master/codes/chap11/code_11_1.cpp
 // https://github.com/drken1215/book_algorithm_solution/blob/master/codes/chap11/code_11_4.cpp
 
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
 
 struct UnionFind {
@@ -14,8 +15,8 @@ struct UnionFind {
     if (parent[x] == -1) {
       return x;
     } else {
-      //return root(parent[x]);
-      return parent[x] = root(parent[x]);
+      //return root(parent[x]);  // O(logN)
+      return parent[x] = root(parent[x]);  // O(alpha(N))
     }
   }
 
