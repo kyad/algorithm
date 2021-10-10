@@ -29,12 +29,14 @@ template<class T1, class T2> ostream& operator<<(ostream& os, const pair<T1, T2>
 
 // vector
 template<class T> ostream& operator<<(ostream& os, const vector<T> &v) {
+  size_t N = v.size();
+  int MOD = 5;
   os << '[';
-  for (size_t i = 0; i < v.size(); i++) {
+  for (size_t i = 0; i < N; i++) {
     os << v[i];
-    if (i % 5 == 4) {
+    if (i % MOD == (MOD - 1)) {
       os << '\n';
-    } else if (i != v.size() - 1) {
+    } else if (i != N - 1) {
       os << ' ';
     }
   }
@@ -44,15 +46,19 @@ template<class T> ostream& operator<<(ostream& os, const vector<T> &v) {
 
 // 2d-matrix
 template<class T> ostream& operator<<(ostream& os, const vector<vector<T> > &v) {
-  for (size_t i = 0; i < v.size(); i++) {
+  size_t y0 = 0;
+  size_t y1 = v.size() - 1;
+  for (size_t i = y0; i <= y1; i++) {
     os << (i == 0 ? "[[" : " [");
-    for (size_t j = 0; j < v[i].size(); j++) {
+    size_t x0 = 0;
+    size_t x1 = v[i].size() - 1;
+    for (size_t j = x0; j <= x1; j++) {
       os << v[i][j];
-      if (j != v[i].size() - 1) {
+      if (j != x1) {
         os << ' ';
       }
     }
-    os << (i == v.size() - 1 ? "]]" : "]\n");
+    os << (i == y1 ? "]]" : "]\n");
   }
   return os;
 }
