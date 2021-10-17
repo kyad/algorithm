@@ -166,6 +166,21 @@ template<class T> ostream& operator<<(ostream& os, const queue<T> &q) {
   return os;
 }
 
+// priority_queue
+template<class T> ostream& operator<<(ostream& os, const priority_queue<T> &q) {
+  os << '[';
+  priority_queue<T> _q(q);
+  while (!_q.empty()) {
+    os << _q.top();
+    _q.pop();
+    if (!_q.empty()) {
+      os << ' ';
+    }
+  }
+  os << ']';
+  return os;
+}
+
 // deque
 template<class T> ostream& operator<<(ostream& os, const deque<T> &dq) {
   os << '[';
