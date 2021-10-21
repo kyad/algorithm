@@ -110,6 +110,26 @@ template<class T> void print_mat(int h, int w, T a[][2000]) {
   }
 }
 
+// 3d-array for DP
+template<class T> ostream& operator<<(ostream& os, const vector<vector<vector<T> > > &v) {
+  size_t i0 = 0;
+  size_t i1 = v.size() - 1;
+  size_t j0 = 0;
+  size_t j1 = v[0].size() - 1;
+  for (size_t i = i0; i <= i1; i++) {
+    for (size_t j = j0; j <= j1; j++) {
+      os << i << ' ' << j << ':';
+      size_t k0 = 0;
+      size_t k1 = v[i][j].size() - 1;
+      for (size_t k = k0; k <= k1; k++) {
+        os << ' ' << v[i][j][k];
+      }
+      os << endl;
+    }
+  }
+  return os;
+}
+
 // set
 template<class T> ostream& operator<<(ostream& os, const set<T> &s) {
   os << '[';
