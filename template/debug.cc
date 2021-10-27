@@ -1,7 +1,9 @@
 #include <iostream>
+#include <map>
 #include <queue>
 #include <set>
 #include <stack>
+#include <tuple>
 using namespace std;
 
 // bit
@@ -24,6 +26,12 @@ void print_bit(int b) {
 // pair
 template<class T1, class T2> ostream& operator<<(ostream& os, const pair<T1, T2> &p) {
   os << "(" << p.first << ", " << p.second << ")";
+  return os;
+}
+
+// tuple3
+template<class T1, class T2, class T3> ostream& operator<<(ostream& os, const tuple<T1, T2, T3> &t) {
+  os << "(" << get<0>(t) << ", " << get<1>(t) << ", " << get<2>(t) << ")";
   return os;
 }
 
@@ -238,6 +246,7 @@ int cmat[10][2000];
 int main() {
   print_bit(5);
   cout << make_pair(1, 2) << endl;
+  cout << make_tuple(1, 2, 3) << endl;
   vector<int> v;
   v.push_back(1);
   v.push_back(2);
