@@ -38,13 +38,15 @@ template<class T1, class T2, class T3> ostream& operator<<(ostream& os, const tu
 // vector
 template<class T> ostream& operator<<(ostream& os, const vector<T> &v) {
   size_t N = v.size();
-  int MOD = 5;
+  int MOD = -1;
   os << '[';
   for (size_t i = 0; i < N; i++) {
     os << v[i];
-    if (i % MOD == (MOD - 1)) {
+    if (i == N - 1) {
+      continue;
+    } else if (MOD > 0 && i % MOD == (MOD - 1)) {
       os << '\n';
-    } else if (i != N - 1) {
+    } else {
       os << ' ';
     }
   }
