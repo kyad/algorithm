@@ -1,4 +1,4 @@
-// https://atcoder.jp/contests/abc075/tasks/abc075_c
+// https://atcoder.jp/contests/abc229/tasks/abc229_e
 // https://github.com/drken1215/book_algorithm_solution/blob/master/codes/chap11/code_11_1.cpp
 // https://github.com/drken1215/book_algorithm_solution/blob/master/codes/chap11/code_11_4.cpp
 
@@ -46,31 +46,29 @@ struct UnionFind {
 int main() {
   int N, M;
   cin >> N >> M;
-  vector<pair<int, int> > graph;
+  vector<vector<int> > graph(N);
   for (int m = 0; m < M; m++) {
     int a, b;
     cin >> a >> b;
-    graph.push_back(make_pair(a - 1, b - 1));
+    a--;
+    b--;
+    graph[a].push_back(b);
   }
-  int ans = 0;
-  for (int m = 0; m < M; m++) {
-    UnionFind uf(N);
-    for (int e = 0; e < M; e++) {
-      if (e == m) {
-        continue;
-      }
-      uf.unite(graph.at(e).first, graph.at(e).second);
-    }
-    int count = 0;
-    for (int n = 0; n < N; n++) {
-      if (uf.root(n) == n) {
-        count++;
+  vector<int> ans(N, 0);
+  UnionFind uf(N);
+  int num = 0;  // Union-Findの連結成分数
+  for (int n = N - 1; n > 0; n--) {
+    num++;
+    for (size_t i = 0; i < graph[n].size(); i++) {
+      int u = graph[n][i];
+      if (uf.unite(n, u)) {
+        num--;
       }
     }
-    if (count == 2) {
-      ans++;
-    }
+    ans[n - 1] = num;
   }
-  cout << ans << endl;
+  for (int n = 0; n < N; n++) {
+    cout << ans[n] << endl;
+  }
   return 0;
 }
