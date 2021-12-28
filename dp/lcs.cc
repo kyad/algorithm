@@ -1,26 +1,49 @@
-// https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_10_C&lang=ja
+// https://atcoder.jp/contests/dp/tasks/dp_f
 // Longest Common Subsequence (最長共通部分列)
 
+#include <algorithm>
 #include <iostream>
 #include <vector>
 using namespace std;
 
+// LCS
 int main() {
-  int q;
-  cin >> q;
-  while (q--) {
-    string X, Y;
-    cin >> X >> Y;
-    vector<vector<int> > dp(X.size() + 1, vector<int>(Y.size() + 1, 0));
-    for (int x = 1; x <= X.size(); x++) {
-      for (int y = 1; y <= Y.size(); y++) {
-        dp[x][y] = max(dp[x - 1][y], dp[x][y - 1]);
-        if (X[x - 1] == Y[y - 1]) {
-          dp[x][y] = max(dp[x][y], dp[x - 1][y - 1] + 1);
-        }
+  string s, t;
+  cin >> s >> t;
+  s.insert(s.begin(), ' ');
+  t.insert(t.begin(), ' ');
+  vector<vector<int> > dp(s.size(), vector<int>(t.size(), 0));
+  for (size_t i = 1; i < s.size(); i++) {
+    for (size_t j = 1; j < t.size(); j++) {
+      dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+      if (s[i] == t[j]) {
+        dp[i][j] = max(dp[i][j], dp[i - 1][j - 1] + 1);
       }
     }
-    cout << dp[X.size()][Y.size()] << endl;
   }
+  int N = dp[s.size() - 1][t.size() - 1];
+  int i = s.size() - 1;
+  int j = t.size() - 1;
+  string ans;
+  for (int n = N; n >= 1; n--) {
+    while (true) {
+      if (i > 1 && dp[i - 1][j] == n) {
+        i--;
+      } else if (j > 1 && dp[i][j - 1] == n) {
+        j--;
+      } else {
+        break;
+      }
+    }
+    ans.push_back(s[i]);
+    if (i > 1) {
+      i--;
+    }
+    if (j > 1) {
+      j--;
+    }
+  }
+  reverse(ans.begin(), ans.end());
+  cout << ans << endl;
   return 0;
 }
