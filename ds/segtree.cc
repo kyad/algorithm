@@ -1,4 +1,4 @@
-// https://atcoder.jp/contests/dp/tasks/dp_q
+// https://atcoder.jp/contests/abc228/tasks/abc228_f
 // https://algo-logic.info/segment-tree/
 // https://qiita.com/drken/items/68b8503ad4ffb469624c
 
@@ -26,6 +26,7 @@ template<class X> struct SegTree {
 
   // 初期化 O(N) i: 0-indexed
   void set(int i, X x) { dat[i + n - 1] = x; }  // dat[n-1]~dat[2n-2]に値が入る
+  void set1(int i, X x) { set(i - 1, x); }  // 1-indexed
   void build() {
     for (int k = n - 2; k >= 0; k--) {
       dat[k] = fx(dat[2 * k + 1], dat[2 * k + 2]);
@@ -41,9 +42,11 @@ template<class X> struct SegTree {
       dat[i] = fx(dat[i * 2 + 1], dat[i * 2 + 2]);
     }
   }
+  void update1(int i, X x) { update(i - 1, x); }  // 1-indexed
 
   // 取得クエリ O(logN) [a, b), a, b: 0-indexed
   X query(int a, int b) { return query_sub(a, b, 0, 0, n); }
+  X query1(int a, int b) { return query(a - 1, b - 1); }  // 1-indexed
   X query_sub(int a, int b, int k, int l, int r) {
     // k: 現在見ているノードの位置 [l, r): dat[k]が表している区間
     if (r <= a || b <= l) {  // 範囲外
@@ -85,26 +88,71 @@ template<class X> ostream& operator<<(ostream& os, const SegTree<X> &segtree) {
 // SegTree<int> rmq(n, fx, -INF);
 
 int main() {
-  int N;
-  cin >> N;
-  vector<int> H(N);
-  for (int n = 0; n < N; n++) {
-    cin >> H.at(n);
-    H.at(n)--;
-  }
-  vector<int> A(N);
-  for (int n = 0; n < N; n++) {
-    cin >> A.at(n);
-  }
-  // dp[i][j]: iまで見た時に高さjまでの美しさの総和の最大値
-  // dp[i][j]をSegTreeで表現する
   auto fx = [](long long x1, long long x2) -> long long { return max(x1, x2); };
-  SegTree<long long> rmq(N, fx, 0);
-  for (int n = 0; n < N; n++) {
-    int h = H.at(n);
-    long long temp = rmq.query(0, h);
-    rmq.update(h, temp + A.at(n));
+  int H, W, h1, w1, h2, w2;
+  cin >> H >> W >> h1 >> w1 >> h2 >> w2;
+  h2 = min(h2, h1);
+  w2 = min(w2, w1);
+  vector<vector<long long> > A(H + 1, vector<long long>(W + 1, 0));  // 1-indexed
+  for (int y = 1; y <= H; y++) {
+    for (int x = 1; x <= W; x++) {
+      cin >> A.at(y).at(x);
+    }
   }
-  cout << rmq.query(0, N) << endl;;
+  for (int y = 1; y <= H; y++) {
+    for (int x = 1; x <= W; x++) {
+      A[y][x] += A[y][x - 1];
+    }
+  }
+  for (int x = 1; x <= W; x++) {
+    for (int y = 1; y <= H; y++) {
+      A[y][x] += A[y - 1][x];
+    }
+  }
+  // Taka[y][x]: (x, y)から(x+w1, y+h1)までの和 (1-indexed)
+  vector<vector<long long> > Taka(H - h1 + 1 + 1, vector<long long>(W - w1 + 1 + 1, 0));
+  for (int y = 1; y <= H - h1 + 1; y++) {
+    for (int x = 1; x <= W - w1 + 1; x++) {
+      Taka[y][x] = A[y + h1 - 1][x + w1 - 1] - A[y + h1 - 1][x - 1] - A[y - 1][x + w1 - 1] + A[y - 1][x - 1];
+    }
+  }
+  // Aoki[y][x]: (x, y)から(x+w2, y+h2)までの和 (1-indexed)
+  vector<vector<long long> > Aoki(H - h2 + 1 + 1, vector<long long>(W - w2 + 1 + 1, 0));
+  for (int y = 1; y <= H - h2 + 1; y++) {
+    for (int x = 1; x <= W - w2 + 1; x++) {
+      Aoki[y][x] = A[y + h2 - 1][x + w2 - 1] - A[y + h2 - 1][x - 1] - A[y - 1][x + w2 - 1] + A[y - 1][x - 1];
+    }
+  }
+  // P: Aoki[y][x]のx方向の幅w1-w2+1のスライド最小値
+  vector<vector<long long> > P(H - h2 + 1 + 1, vector<long long>(W - w1 + 1 + 1, 0));
+  for (int y = 1; y <= H - h2 + 1; y++) {
+    SegTree<long long> rmq(W - w2 + 1, fx, 0);  // Range Maximum Query
+    for (int x = 1; x <= W - w2 + 1; x++) {
+      rmq.set1(x, Aoki[y][x]);
+    }
+    rmq.build();
+    for (int x = 1; x <= W - w1 + 1; x++) {
+      P[y][x] = rmq.query1(x, x + w1 - w2 + 1);
+    }
+  }
+  // Q: Aoki[y][x]のx方向の幅w1-w2+1、y方向の幅h1-h2+1のスライド最小値
+  vector<vector<long long> > Q(H - h1 + 1 + 1, vector<long long>(W - w1 + 1 + 1, 0));
+  for (int x = 1; x <= W - w1 + 1; x++) {
+    SegTree<long long> rmq(H - h2 + 1, fx, 0);  // Range Maximum Query
+    for (int y = 1; y <= H - h2 + 1; y++) {
+      rmq.set1(y, P[y][x]);
+    }
+    rmq.build();
+    for (int y = 1; y <= H - h1 + 1; y++) {
+      Q[y][x] = rmq.query1(y, y + h1 - h2 + 1);
+    }
+  }
+  long long ans = 0;
+  for (int y = 1; y <= H - h1 + 1; y++) {
+    for (int x = 1; x <= W - w1 + 1; x++) {
+      ans = max(ans, Taka[y][x] - Q[y][x]);
+    }
+  }
+  cout << ans << endl;
   return 0;
 }
