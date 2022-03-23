@@ -56,13 +56,13 @@ template<class T> ostream& operator<<(ostream& os, const vector<T> &v) {
 
 // 2d-matrix
 template<class T> ostream& operator<<(ostream& os, const vector<vector<T> > &v) {
-  size_t y0 = 0;
-  size_t y1 = v.size() - 1;
-  for (size_t i = y0; i <= y1; i++) {
+  int y0 = 0;
+  int y1 = (int)v.size() - 1;
+  for (int i = y0; i <= y1; i++) {
     os << (i == 0 ? "[[" : " [");
-    size_t x0 = 0;
-    size_t x1 = v[i].size() - 1;
-    for (size_t j = x0; j <= x1; j++) {
+    int x0 = 0;
+    int x1 = (int)v[i].size() - 1;
+    for (int j = x0; j <= x1; j++) {
       os << v[i][j];
       if (j != x1) {
         os << ' ';
