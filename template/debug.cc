@@ -54,6 +54,15 @@ template<class T> ostream& operator<<(ostream& os, const vector<T> &v) {
   return os;
 }
 
+// 1d-array (C)
+template<class T> void print_vec(int N, T a[]) {
+  vector<T> v(N);
+  for (int n = 0; n < N; n++) {
+    v[n] = a[n];
+  }
+  cout << v <<endl;
+}
+
 // 2d-matrix
 template<class T> ostream& operator<<(ostream& os, const vector<vector<T> > &v) {
   int y0 = 0;
