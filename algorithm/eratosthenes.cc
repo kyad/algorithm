@@ -1,4 +1,5 @@
 // https://atcoder.jp/contests/abc084/tasks/abc084_d
+// https://manabitimes.jp/math/992
 
 #include <iostream>
 #include <vector>
@@ -23,7 +24,7 @@ int int_sqrt(int N) {
   }
 }
 
-// Sieve of Eratosthenes  O(N * sqrt(N))
+// Sieve of Eratosthenes  O(N * log log (N))
 vector<bool> eratosthenes(int N) {
   vector<bool> is_prime(N + 1, true);
   is_prime.at(0) = false;
