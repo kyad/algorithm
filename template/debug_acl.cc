@@ -1,3 +1,9 @@
+// modint
+ostream& operator<<(ostream& os, const mint &v) {
+  os << v.val();
+  return os;
+}
+
 // lazy_segtree
 ostream& operator<<(ostream& os, lazy_segtree<S, op, e, F, mapping, composition, id> seg) {
   const int N = 1;
