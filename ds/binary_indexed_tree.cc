@@ -1,10 +1,13 @@
-// https://atcoder.jp/contests/abc253/tasks/abc253_f
+// https://atcoder.jp/contests/abc256/tasks/abc256_f
 // https://algo-logic.info/binary-indexed-tree/
 
 #include <algorithm>
 #include <iostream>
 #include <vector>
 using namespace std;
+#include <atcoder/modint>
+using namespace atcoder;
+using mint = modint998244353;
 
 template<class T> struct binary_indexed_tree {
   int N;
@@ -24,6 +27,7 @@ template<class T> struct binary_indexed_tree {
       bit[k] += x;
     }
   }
+  // Add x to a[k], O(logN)
   // k: 0-indexed
   void add0(int k, T x) {
     add1(k + 1, x);
@@ -37,6 +41,7 @@ template<class T> struct binary_indexed_tree {
     }
     return ret;
   }
+  // Returns a[0] + a[1] + ... + a[k], O(logN)
   // k: 0-indexed
   T sum0(int k) {
     return sum1(k + 1);
@@ -71,59 +76,50 @@ template<class T> struct binary_indexed_tree {
 // binary_indexed_tree<long long> bit(N + 1);
 // [l, r]にxを加算：add(l, x), add(r + 1, x)
 // 1点iの取得：sum(0, i)
+// cf. https://atcoder.jp/contests/abc253/tasks/abc253_f
+
+// A[i]にiの多項式を掛けた値の和を計算したい場合は、
+// iについて展開して、i^k*A[i]を要素に持つbinary indexed treeを考える
 
 int main() {
-  int N, M, Q;
-  cin >> N >> M >> Q;
-  vector<vector<int> > query(Q, vector<int>(4));
-  vector<pair<int, int> > adds;  // 加算クエリ
-  vector<vector<pair<int, int> > > sums(1);  // 答えを計算するためのクエリ。1は下駄
-  vector<int> last(N), val(N, 0);  // 行iに最後にセットされた時刻、その時のx
-  vector<long long> ans;  // ai番目の答え
-  vector<int> js;  // ai番目のj
+  int N, Q;
+  cin >> N >> Q;
+  vector<int> A(N);
+  for (int n = 0; n < N; n++) {
+    cin >> A.at(n);
+  }
+  // A[i], i*A[i], i^2*A[i]を要素に持つbinary indexed tree
+  vector<binary_indexed_tree<mint> > bit(3, binary_indexed_tree<mint>(N));
+  // 1点更新
+  auto bit_add = [&](int i, mint a) {
+    for (int k = 0; k < 3; k++) {
+      bit[k].add0(i, a);
+      a *= i;
+    }
+  };
+  // 初期化
+  for (int n = 0; n < N; n++) {
+    bit_add(n, A.at(n));
+  }
   for (int q = 0; q < Q; q++) {
     int type;
     cin >> type;
     if (type == 1) {
-      int l, r, x;
-      cin >> l >> r >> x;
-      l--;
-      adds.push_back(make_pair(l, x));
-      adds.push_back(make_pair(r, -x));
-      sums.push_back(vector<pair<int, int> >());
-      sums.push_back(vector<pair<int, int> >());
-    } else if (type == 2) {
-      int i, x;
-      cin >> i >> x;
-      i--;
-      last[i] = adds.size();  // addsのサイズを時刻にする。下駄が必要
-      val[i] = x;
+      int x, v;
+      cin >> x >> v;
+      x--;
+      bit_add(x, v - A.at(x));
+      A.at(x) = v;
     } else {
-      int i, j;
-      cin >> i >> j;
-      i--;
-      j--;
-      int ai = ans.size();  // 出力クエリのindex
-      ans.push_back(val[i]);  // ans[ai]
-      js.push_back(j);  // js[ai]
-      sums[last[i]].push_back(make_pair(ai, -1));  // 2回目のループで、ans[ai]にbitの和の不要部分を引いてもらう
-      sums[adds.size()].push_back(make_pair(ai, 1));  // 2回目のループで、ans[ai]にbitの和を足してもらう。下駄が必要
+      int x;
+      cin >> x;
+      x--;
+      mint ans = bit[2].sum0(x);
+      ans += bit[1].sum0(x) * (-2 * x - 3);
+      ans += bit[0].sum0(x) * (x + 1) * (x + 2);
+      ans /= 2;
+      cout << ans.val() << endl;
     }
-  }
-  binary_indexed_tree<long long> bit(M + 2);
-  for (int t = 0; t < (int)adds.size() + 1; t++) {  // +1は下駄分
-    for (size_t i = 0; i < sums[t].size(); i++) {
-      int ai = sums[t][i].first;
-      int c = sums[t][i].second;
-      ans[ai] += bit.sum0(js[ai]) * c;
-    }
-    if (t == adds.size()) {
-      break;  // addsには下駄を履かせていないため
-    }
-    bit.add0(adds[t].first, adds[t].second);
-  }
-  for (int ai = 0; ai < (int)ans.size(); ai++) {
-    cout << ans[ai] << endl;
   }
   return 0;
 }
