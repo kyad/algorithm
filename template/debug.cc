@@ -152,12 +152,14 @@ template<class T> ostream& operator<<(ostream& os, const vector<vector<vector<T>
 // set
 template<class T> ostream& operator<<(ostream& os, const set<T> &s) {
   os << '[';
-  typename set<T>::iterator last = s.end();
-  last--;
-  for (typename set<T>::iterator it = s.begin(); it != s.end(); it++) {
-    os << *it;
-    if (it != last) {
-      os << ' ';
+  if (!s.empty()) {
+    typename set<T>::iterator last = s.end();
+    last--;
+    for (typename set<T>::iterator it = s.begin(); it != s.end(); it++) {
+      os << *it;
+      if (it != last) {
+        os << ' ';
+      }
     }
   }
   os << ']';
