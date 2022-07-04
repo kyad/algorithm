@@ -1,14 +1,14 @@
-// https://atcoder.jp/contests/abc232/tasks/abc232_e
+// https://atcoder.jp/contests/abc224/tasks/abc224_f
+// https://noshi91.hatenablog.com/entry/2019/03/31/174006
+// https://qiita.com/uesho/items/1ee5c3e665c72c035880
 
+#include <cassert>
+#include <cstdint>
 #include <iostream>
 #include <vector>
 using namespace std;
 
 const int MOD = 998244353;
-
-// https://noshi91.hatenablog.com/entry/2019/03/31/174006
-// modint
-#include <cstdint>
 
 template <std::uint_fast64_t Modulus> class modint {
   using u64 = std::uint_fast64_t;
@@ -19,6 +19,7 @@ public:
   constexpr modint(const u64 x = 0) noexcept : a(x % Modulus) {}
   constexpr u64 &value() noexcept { return a; }
   constexpr const u64 &value() const noexcept { return a; }
+  constexpr modint operator-() const noexcept { return modint(-a); }
   constexpr modint operator+(const modint rhs) const noexcept {
     return modint(*this) += rhs;
   }
@@ -31,11 +32,19 @@ public:
   constexpr modint operator/(const modint rhs) const noexcept {
     return modint(*this) /= rhs;
   }
+  constexpr modint operator/(const long long rhs) const noexcept {
+    return modint(*this) /= rhs;
+  }
   constexpr modint &operator+=(const modint rhs) noexcept {
     a += rhs.a;
     if (a >= Modulus) {
       a -= Modulus;
     }
+    return *this;
+  }
+  constexpr modint &operator+=(const long long rhs) noexcept {
+    modint<Modulus> b = modint<Modulus>(rhs);
+    (*this) += b;
     return *this;
   }
   constexpr modint &operator-=(const modint rhs) noexcept {
@@ -45,8 +54,18 @@ public:
     a -= rhs.a;
     return *this;
   }
+  constexpr modint &operator-=(const long long rhs) noexcept {
+    modint<Modulus> b = modint<Modulus>(rhs);
+    (*this) -= b;
+    return *this;
+  }
   constexpr modint &operator*=(const modint rhs) noexcept {
     a = a * rhs.a % Modulus;
+    return *this;
+  }
+  constexpr modint &operator*=(const long long rhs) noexcept {
+    modint<Modulus> b = modint<Modulus>(rhs);
+    (*this) *= b;
     return *this;
   }
   constexpr modint &operator/=(modint rhs) noexcept {
@@ -60,41 +79,57 @@ public:
     }
     return *this;
   }
+  constexpr modint &operator/=(long long rhs) noexcept {
+    modint<Modulus> b = modint<Modulus>(rhs);
+    (*this) /= b;
+    return *this;
+  }
+  constexpr modint &operator++() noexcept {
+    a++;
+    if (a >= Modulus) {
+      a -= Modulus;
+    }
+    return *this;
+  }
+  constexpr modint &operator--() noexcept {
+    if (a == 0) {
+      a += Modulus;
+    }
+    a--;
+    return *this;
+  }
+  modint pow(long long t) const {
+    assert(t >= 0);
+    if (!t) return 1;
+    modint a = pow(t>>1);
+    a *= a;
+    if (t&1) a *= *this;
+    return a;
+  }
+  friend ostream& operator<<(ostream& os, const modint& m) {
+    os << m.a;
+    return os;
+  }
 };
 
-// debug
-template <std::uint_fast64_t Modulus> ostream& operator<<(ostream& os, const modint<Modulus> &m) {
-  os << m.a;
-  return os;
-}
-
 int main() {
-  int H, W, K;
-  cin >> H >> W >> K;
-  int x1, y1, x2, y2;
-  cin >> x1 >> y1 >> x2 >> y2;
-  vector<vector<vector<modint<MOD> > > > dp(K + 1, vector<vector<modint<MOD> > >(2, vector<modint<MOD> >(2, modint<MOD>(0))));
-  dp[0][0][0] = 1;
-  for (int k = 1; k <= K; k++) {
-    dp[k][0][0] += dp[k - 1][0][1] * 1;
-    dp[k][0][0] += dp[k - 1][1][0] * 1;
-
-    dp[k][0][1] += dp[k - 1][0][0] * (W - 1);
-    dp[k][0][1] += dp[k - 1][0][1] * (W - 2);
-    dp[k][0][1] += dp[k - 1][1][1] * 1;
-
-    dp[k][1][0] += dp[k - 1][0][0] * (H - 1);
-    dp[k][1][0] += dp[k - 1][1][0] * (H - 2);
-    dp[k][1][0] += dp[k - 1][1][1] * 1;
-
-    dp[k][1][1] += dp[k - 1][0][1] * (H - 1);
-    dp[k][1][1] += dp[k - 1][1][0] * (W - 1);
-    dp[k][1][1] += dp[k - 1][1][1] * (H - 2 + W - 2);
+  string str;
+  cin >> str;
+  int N = str.size();
+  vector<int> S(N + 1, 0);  // 1-indexed
+  for (int n = 0; n < N; n++) {
+    S.at(n + 1) = str[n] - '0';
   }
-  dp[K][0][1] /= (W - 1);
-  dp[K][1][0] /= (H - 1);
-  dp[K][1][1] /= (W - 1);
-  dp[K][1][1] /= (H - 1);
-  cout << dp[K][x2 == x1 ? 0 : 1][y2 == y1 ? 0 : 1].a << endl;
+  vector<modint<MOD> > dp(N + 1, 0);  // dp[i]: iまで見た時の和。1-indexed
+  vector<modint<MOD> > sum(N + 1, 0);  // dp[1]からdp[i]までの和。1-indexed
+  vector<modint<MOD> > T(N + 1, 0);  // 1-indexed
+  for (int i = 1; i <= N; i++) {
+    modint<MOD> two = 2;
+    modint<MOD> pow2 = two.pow(i - 1);
+    T[i] = T[i - 1] * 10 + pow2 * S[i];
+    dp[i] = sum[i - 1] + T[i];
+    sum[i] = dp[i] + sum[i - 1];
+  }
+  cout << dp[N] << endl;
   return 0;
 }
