@@ -6,6 +6,18 @@
 #include <tuple>
 using namespace std;
 
+// debug print
+#define print1(a) std::cout << #a << '=' << a << std::endl;
+#define print2(a, b) print1(a); print1(b);
+#define print3(a, b, c) print1(a); print2(b, c);
+#define print4(a, b, c, d) print1(a); print3(b, c, d);
+#define print5(a, b, c, d, e) print1(a); print4(b, c, d, e);
+#define print6(a, b, c, d, e, f) print1(a); print5(b, c, d, e, f);
+#define print7(a, b, c, d, e, f, g) print1(a); print6(b, c, d, e, f, g);
+#define print8(a, b, c, d, e, f, g, h) print1(a); print7(b, c, d, e, f, g, h);
+#define print_select(a, b, c, d, e, f, g, h, i, ...) i
+#define print(...) print_select(__VA_ARGS__, print8, print7, print6, print5, print4, print3, print2, print1)(__VA_ARGS__)
+
 // bit
 #include <bitset>
 #define BIT (8)
@@ -316,5 +328,6 @@ int main() {
   st.push(1);
   st.push(2);
   cout << "st=" << st << endl;
+  print(v, s)
   return 0;
 }
