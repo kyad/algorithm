@@ -286,27 +286,11 @@ template<class T> ostream& operator<<(ostream& os, const vector<vector<vector<T>
 
 int cmat[10][2000];
 int main() {
-  print_bit(5);
   cout << make_pair(1, 2) << endl;
-  cout << make_tuple(1, 2, 3) << endl;
   vector<int> v;
   v.push_back(1);
   v.push_back(2);
   cout << "v=" << v << endl;
-  vector<vector<int> > mat(2, vector<int>(2));
-  mat[0][0] = 1;
-  mat[0][1] = 2;
-  mat[1][0] = 3;
-  mat[1][1] = 4;
-  cout << "mat=" << endl;
-  cout << mat << endl;
-  vector<vector<int> > bit_dp(1<<2, vector<int>(5, 1));
-  print_bit_dp(bit_dp);
-  cmat[0][0] = 1;
-  cmat[0][1] = 2;
-  cmat[1][0] = 3;
-  cmat[1][1] = 4;
-  print_mat(2, 2, cmat);
   set<int> s;
   s.insert(1);
   s.insert(2);
@@ -328,6 +312,22 @@ int main() {
   st.push(1);
   st.push(2);
   cout << "st=" << st << endl;
+  cout << make_tuple(1, 2, 3) << endl;
+  print_bit(5);
+  vector<vector<int> > mat(2, vector<int>(2));
+  mat[0][0] = 1;
+  mat[0][1] = 2;
+  mat[1][0] = 3;
+  mat[1][1] = 4;
+  cout << "mat=" << endl;
+  cout << mat << endl;
+  vector<vector<int> > bit_dp(1<<2, vector<int>(5, 1));
+  print_bit_dp(bit_dp);
+  cmat[0][0] = 1;
+  cmat[0][1] = 2;
+  cmat[1][0] = 3;
+  cmat[1][1] = 4;
+  print_mat(2, 2, cmat);
   print(v, s)
   return 0;
 }
