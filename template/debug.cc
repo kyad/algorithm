@@ -300,10 +300,25 @@ int main() {
   ms.insert(2);
   ms.insert(2);
   cout << "ms=" << ms << endl;
+  map<int, int> mp;
+  mp[1] = 2;
+  mp[3] = 10;
+  mp[7] = 20;
+  cout << "mp=" << mp << endl;
   queue<int> q;
   q.push(1);
   q.push(2);
   cout << "q=" << q << endl;
+  priority_queue<int> pq;
+  pq.push(2);
+  pq.push(1);
+  pq.push(5);
+  cout << "pq=" << pq << endl;
+  priority_queue<int, vector<int>, greater<int> > pqg;
+  pqg.push(2);
+  pqg.push(1);
+  pqg.push(5);
+  cout << "pqg=" << pqg << endl;
   deque<int> dq;
   dq.push_front(1);
   dq.push_back(2);
@@ -328,6 +343,7 @@ int main() {
   cmat[1][0] = 3;
   cmat[1][1] = 4;
   print_mat(2, 2, cmat);
-  print(v, s)
+  print(v, s);
+  print(v, s, ms, mp, q, pq, dq, st);
   return 0;
 }
