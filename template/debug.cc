@@ -78,7 +78,7 @@ template<class T1, class T2> ostream& operator<<(ostream& os, const map<T1, T2> 
   os << '[';
   size_t i = m.size();
   for (typename map<T1, T2>::const_iterator it = m.begin(); it != m.end(); it++) {
-    os << '(' << it->first << " , " << it->second << ')';
+    os << '{' << it->first << ": " << it->second << '}';
     if (i > 1) {
       os << ' ';
     }
