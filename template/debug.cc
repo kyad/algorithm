@@ -18,32 +18,9 @@ using namespace std;
 #define print_select(a, b, c, d, e, f, g, h, i, ...) i
 #define print(...) print_select(__VA_ARGS__, print8, print7, print6, print5, print4, print3, print2, print1)(__VA_ARGS__)
 
-// bit
-#include <bitset>
-#define BIT (8)
-string bitstr(int b) {
-  return bitset<BIT>(b).to_string();
-}
-
-void print_bit(int b) {
-  // Header
-  for (int i = BIT - 1; i >= 0; i--) {
-    cout << i;
-  }
-  cout << endl;
-  // Main
-  cout << bitstr(b) << endl;
-}
-
 // pair
 template<class T1, class T2> ostream& operator<<(ostream& os, const pair<T1, T2> &p) {
   os << "(" << p.first << ", " << p.second << ")";
-  return os;
-}
-
-// tuple3
-template<class T1, class T2, class T3> ostream& operator<<(ostream& os, const tuple<T1, T2, T3> &t) {
-  os << "(" << get<0>(t) << ", " << get<1>(t) << ", " << get<2>(t) << ")";
   return os;
 }
 
@@ -63,101 +40,6 @@ template<class T> ostream& operator<<(ostream& os, const vector<T> &v) {
     }
   }
   os << ']';
-  return os;
-}
-
-// 1d-array (C)
-template<class T> void print_vec(int N, T a[]) {
-  vector<T> v(N);
-  for (int n = 0; n < N; n++) {
-    v[n] = a[n];
-  }
-  cout << v <<endl;
-}
-
-// 2d-matrix
-template<class T> ostream& operator<<(ostream& os, const vector<vector<T> > &v) {
-  int y0 = 0;
-  int y1 = (int)v.size() - 1;
-  for (int i = y0; i <= y1; i++) {
-    os << (i == 0 ? "[[" : " [");
-    int x0 = 0;
-    int x1 = (int)v[i].size() - 1;
-    for (int j = x0; j <= x1; j++) {
-      os << v[i][j];
-      if (j != x1) {
-        os << ' ';
-      }
-    }
-    os << (i == y1 ? "]]" : "]\n");
-  }
-  return os;
-}
-
-// 2d-matrix for bit DP
-#include <bitset>
-#define BIT (8)
-template<class T> void print_bit_dp(const vector<vector<T> > &v) {
-  const long long INF = 1000000000000 * 16 + 1;
-  // Header
-  for (int i = BIT - 1; i >= 0; i--) {
-    cout << i;
-  }
-  cout << ' ';
-  for (size_t j = 0; j < v[0].size(); j++) {
-    cout << ' ' << j;
-  }
-  cout << endl;
-  // Main
-  for (size_t i = 0; i < v.size(); i++) {
-    cout << bitset<BIT>(i) << " [";
-    for (size_t j = 0; j < v[i].size(); j++) {
-      if (v[i][j] >= INF) {
-        cout << '_';
-      } else {
-        cout << v[i][j];
-      }
-      cout << (j == v[i].size() - 1 ? "]\n" : " ");
-    }
-  }
-}
-
-// 2d-matrix (C)
-#include <iomanip>
-template<class T> void print_mat(int h, int w, T a[][2000]) {
-  const int fmtw = 4;
-  for (int j = 0; j < fmtw + 1; j++) {
-    cout << ' ';
-  }
-  for (int j = 0; j < w; j++) {
-    cout << ' ' << right << setw(fmtw) << j;
-  }
-  cout << endl;
-  for (int i = 0; i < h; i++) {
-    cout << right << setw(fmtw) << i << " [";
-    for (int j = 0; j < w; j++) {
-      cout << right << setw(fmtw) << a[i][j] << (j == w - 1 ? "]\n" : " ");
-    }
-  }
-}
-
-// 3d-array for DP
-template<class T> ostream& operator<<(ostream& os, const vector<vector<vector<T> > > &v) {
-  size_t i0 = 0;
-  size_t i1 = v.size() - 1;
-  size_t j0 = 0;
-  size_t j1 = v[0].size() - 1;
-  for (size_t i = i0; i <= i1; i++) {
-    for (size_t j = j0; j <= j1; j++) {
-      os << i << ' ' << j << ':';
-      size_t k0 = 0;
-      size_t k1 = v[i][j].size() - 1;
-      for (size_t k = k0; k <= k1; k++) {
-        os << ' ' << v[i][j][k];
-      }
-      os << endl;
-    }
-  }
   return os;
 }
 
@@ -281,6 +163,124 @@ template<class T> ostream& operator<<(ostream& os, const stack<T> &s) {
     }
   }
   os << ']';
+  return os;
+}
+
+// tuple3
+template<class T1, class T2, class T3> ostream& operator<<(ostream& os, const tuple<T1, T2, T3> &t) {
+  os << "(" << get<0>(t) << ", " << get<1>(t) << ", " << get<2>(t) << ")";
+  return os;
+}
+
+// bit
+#include <bitset>
+#define BIT (8)
+string bitstr(int b) {
+  return bitset<BIT>(b).to_string();
+}
+
+void print_bit(int b) {
+  // Header
+  for (int i = BIT - 1; i >= 0; i--) {
+    cout << i;
+  }
+  cout << endl;
+  // Main
+  cout << bitstr(b) << endl;
+}
+
+// 1d-array (C)
+template<class T> void print_vec(int N, T a[]) {
+  vector<T> v(N);
+  for (int n = 0; n < N; n++) {
+    v[n] = a[n];
+  }
+  cout << v <<endl;
+}
+
+// 2d-matrix
+template<class T> ostream& operator<<(ostream& os, const vector<vector<T> > &v) {
+  int y0 = 0;
+  int y1 = (int)v.size() - 1;
+  for (int i = y0; i <= y1; i++) {
+    os << (i == 0 ? "[[" : " [");
+    int x0 = 0;
+    int x1 = (int)v[i].size() - 1;
+    for (int j = x0; j <= x1; j++) {
+      os << v[i][j];
+      if (j != x1) {
+        os << ' ';
+      }
+    }
+    os << (i == y1 ? "]]" : "]\n");
+  }
+  return os;
+}
+
+// 2d-matrix for bit DP
+#include <bitset>
+#define BIT (8)
+template<class T> void print_bit_dp(const vector<vector<T> > &v) {
+  const long long INF = 1000000000000 * 16 + 1;
+  // Header
+  for (int i = BIT - 1; i >= 0; i--) {
+    cout << i;
+  }
+  cout << ' ';
+  for (size_t j = 0; j < v[0].size(); j++) {
+    cout << ' ' << j;
+  }
+  cout << endl;
+  // Main
+  for (size_t i = 0; i < v.size(); i++) {
+    cout << bitset<BIT>(i) << " [";
+    for (size_t j = 0; j < v[i].size(); j++) {
+      if (v[i][j] >= INF) {
+        cout << '_';
+      } else {
+        cout << v[i][j];
+      }
+      cout << (j == v[i].size() - 1 ? "]\n" : " ");
+    }
+  }
+}
+
+// 2d-matrix (C)
+#include <iomanip>
+template<class T> void print_mat(int h, int w, T a[][2000]) {
+  const int fmtw = 4;
+  for (int j = 0; j < fmtw + 1; j++) {
+    cout << ' ';
+  }
+  for (int j = 0; j < w; j++) {
+    cout << ' ' << right << setw(fmtw) << j;
+  }
+  cout << endl;
+  for (int i = 0; i < h; i++) {
+    cout << right << setw(fmtw) << i << " [";
+    for (int j = 0; j < w; j++) {
+      cout << right << setw(fmtw) << a[i][j] << (j == w - 1 ? "]\n" : " ");
+    }
+  }
+}
+
+// 3d-array for DP
+template<class T> ostream& operator<<(ostream& os, const vector<vector<vector<T> > > &v) {
+  size_t i0 = 0;
+  size_t i1 = v.size() - 1;
+  size_t j0 = 0;
+  size_t j1 = v[0].size() - 1;
+  for (size_t i = i0; i <= i1; i++) {
+    for (size_t j = j0; j <= j1; j++) {
+      os << i << ' ' << j << ':';
+      size_t k0 = 0;
+      size_t k1 = v[i][j].size() - 1;
+      for (size_t k = k0; k <= k1; k++) {
+        os << ' ' << v[i][j][k];
+      }
+      os << endl;
+    }
+  }
   return os;
 }
 
