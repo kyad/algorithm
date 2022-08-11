@@ -26,6 +26,7 @@ template<class T> ostream& operator<<(ostream& os, const vector<T> &v) { int MOD
     else { os << ' '; }
   } os << ']'; return os; }
 template<class T1, class T2> ostream& operator<<(ostream& os, const pair<T1, T2> &p) { os << "(" << p.first << ", " << p.second << ")"; return os; }
+template<class T1, class T2, class T3> ostream& operator<<(ostream& os, const tuple<T1, T2, T3> &t) { os << "(" << get<0>(t) << ", " << get<1>(t) << ", " << get<2>(t) << ")"; return os; }
 template<class T> ostream& operator<<(ostream& os, const set<T> &s) {
   vector<T> v; for (typename set<T>::iterator it = s.begin(); it != s.end(); it++) { v.push_back(*it); };
   os << v; return os; }
@@ -47,12 +48,6 @@ template<class T> ostream& operator<<(ostream& os, const deque<T> &dq) {
   vector<T> v; for (auto it = dq.begin(); it != dq.end(); it++) { v.push_back(*it); } os << v; return os; }
 template<class T> ostream& operator<<(ostream& os, const stack<T> &s) {
   vector<T> v; stack<T> _s(s); while (!_s.empty()) { v.push_back(_s.top()); _s.pop(); } reverse(v.begin(), v.end()); os << v; return os; }
-
-// tuple3
-template<class T1, class T2, class T3> ostream& operator<<(ostream& os, const tuple<T1, T2, T3> &t) {
-  os << "(" << get<0>(t) << ", " << get<1>(t) << ", " << get<2>(t) << ")";
-  return os;
-}
 
 // bit
 #include <bitset>
@@ -169,6 +164,7 @@ template<class T> ostream& operator<<(ostream& os, const vector<vector<vector<T>
 int cmat[10][2000];
 int main() {
   cout << make_pair(1, 2) << endl;
+  cout << make_tuple(1, 2, 3) << endl;
   vector<int> v;
   v.push_back(1);
   v.push_back(2);
@@ -209,7 +205,6 @@ int main() {
   st.push(1);
   st.push(2);
   cout << "st=" << st << endl;
-  cout << make_tuple(1, 2, 3) << endl;
   print_bit(5);
   vector<vector<int> > mat(2, vector<int>(2));
   mat[0][0] = 1;
