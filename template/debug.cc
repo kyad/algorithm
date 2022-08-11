@@ -1,13 +1,13 @@
 #include <iostream>
+using namespace std;
+
+// debug
+#include <algorithm>
 #include <map>
 #include <queue>
 #include <set>
 #include <stack>
 #include <tuple>
-using namespace std;
-
-// debug
-#include <algorithm>
 #include <vector>
 #define print1(a) std::cout << #a << '=' << a << std::endl;
 #define print2(a, b) print1(a); print1(b);
