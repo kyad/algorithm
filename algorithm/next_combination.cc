@@ -1,4 +1,4 @@
-// https://atcoder.jp/contests/tenka1-2018-beginner/tasks/tenka1_2018_d
+// https://atcoder.jp/contests/abc263/tasks/abc263_c
 // https://kopricky.github.io/code/Computation_Basic/next_combination.html
 
 #include <algorithm>
@@ -6,47 +6,28 @@
 #include <vector>
 using namespace std;
 
+static void show(vector<int> ans) {
+  for (size_t i = 0; i < ans.size(); i++) {
+    cout << (ans.at(i) + 1) << ' ';
+  }
+  cout << endl;
+}
+
 int main() {
-  const int n_max = 100000;
-  vector<int> n_to_k(n_max + 1, -1);
-  for (int k = 2;; k++) {
-    int value = k * (k - 1) / 2;
-    if (value > n_max) {
-      break;
-    }
-    n_to_k[value] = k;
-  }
-  int N;
-  cin >> N;
-  int k = n_to_k[N];
-  if (k < 0) {
-    cout << "No" << endl;
-    return 0;
-  }
-  cout << "Yes" << endl;
-  cout << k << endl;
+  int N, M;
+  cin >> N >> M;
 
-  vector<vector<int> > ans(k);
-  int n = 1;
-
-  // next_combination
-  vector<bool> mask(k, false);
-  fill(mask.end() - 2, mask.end(), true);
+  // Next combination. Select N from M
+  vector<bool> mask(M, true);
+  fill(mask.begin(), mask.begin() + N, false);
   do {
-    for (int i = 0; i < k; i++) {
-      if (mask[i]) {
-        ans[i].push_back(n);
+    vector<int> ans;
+    for (int i = 0; i < M; i++) {
+      if (!mask[i]) {
+        ans.push_back(i);
       }
     }
-    n++;
+    show(ans);
   } while (next_permutation(mask.begin(), mask.end()));
-
-  for (int i = 0; i < k; i++) {
-    cout << ans[i].size();
-    for (size_t j = 0; j < ans[i].size(); j++) {
-      cout << ' ' << ans[i][j];
-    }
-    cout << endl;
-  }
   return 0;
 }
