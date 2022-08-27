@@ -1,51 +1,51 @@
-// https://atcoder.jp/contests/arc128/tasks/arc128_a
-// TLE
+// https://atcoder.jp/contests/arc146/tasks/arc146_a
+// sudo apt install libboost-dev
 
 #include <algorithm>
 #include <iostream>
+#include <map>
+#include <set>
 #include <vector>
-#include <boost/rational.hpp>
 #include <boost/multiprecision/cpp_int.hpp>
 using namespace std;
 using namespace boost;
 
+// xをbase進数で見た時の桁数を返す
+int digits(long long x, int base) { int d = 0; while (x > 0) { x /= base; d++; } return d; }
+
+multiprecision::cpp_int value(int a, int b, int c) {
+  string s = to_string(a) + to_string(b) + to_string(c);
+  return multiprecision::cpp_int(s);
+}
+
 int main() {
   int N;
   cin >> N;
-  vector<int> A(N + 1);
-  for (int n = 1; n <= N; n++) {
+  vector<int> A(N);
+  for (int n = 0; n < N; n++) {
     cin >> A.at(n);
   }
-  // dp[0][]: gold
-  // dp[1][]: silver
-  vector<vector<rational<multiprecision::cpp_int> > > dp(2, vector<rational<multiprecision::cpp_int> >(N + 1));
-  vector<vector<int> > memo(2, vector<int>(N + 1));
-  dp[0][0] = 1;
-  dp[1][0] = 0;
-  for (int n = 1; n <= N; n++) {
-    // gold
-    rational<multiprecision::cpp_int> a, b;
-    a = dp[0][n - 1];
-    b = dp[1][n - 1] / A.at(n);
-    memo[0][n] = b > a ? 1 : 0;
-    dp[0][n] = max(a, b);
-    // silver
-    a = dp[1][n - 1];
-    b = dp[0][n - 1] * A.at(n);
-    memo[1][n] = b > a ? 1 : 0;
-    dp[1][n] = max(a, b);
+  // digit -> values
+  map<int, multiset<int> > mp;
+  for (int n = 0; n < N; n++) {
+    int d = digits(A.at(n), 10);
+    mp[-d].insert(-A.at(n));
   }
-  vector<int> ans;
-  int k = 0;
-  for (int n = N; n >= 1; n--) {
-    ans.push_back(memo[k][n]);
-    if (memo[k][n]) {
-      k = 1 - k;
+  vector<int> cand(3);
+  for (int i = 0; i < 3; i++) {
+    multiset<int>::iterator it = mp.begin()->second.begin();
+    cand.at(i) = -(*it);
+    mp.begin()->second.erase(it);
+    if (mp.begin()->second.size() == 0) {
+      mp.erase(mp.begin());
     }
   }
-  reverse(ans.begin(), ans.end());
-  for (int i = 0; i < ans.size(); i++) {
-    cout << ans[i] << (i == ans.size() - 1 ? '\n' : ' ');
-  }
+  vector<int> p = {0, 1, 2};
+  multiprecision::cpp_int ans = 0;
+  do {
+    multiprecision::cpp_int now = value(cand[p[0]], cand[p[1]], cand[p[2]]);
+    ans = max(ans, now);
+  } while (next_permutation(p.begin(), p.end()));
+  cout << ans << endl;
   return 0;
 }
