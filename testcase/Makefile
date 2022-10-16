@@ -10,6 +10,6 @@ clean:
 
 .PHONY: gen-test
 gen-test:
-	rm test/random-*
+	rm -f test/random-*
 	oj g/i 'python gen.py'
-	oj g/o -c ./ac.out
+	oj g/o -c ./naive.out
