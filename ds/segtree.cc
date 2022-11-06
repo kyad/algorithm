@@ -28,6 +28,9 @@ template<class X> struct SegTree {
     dat.resize(2 * n - 1, ex_);
   }
 
+  // 0-indexedの関数は、サイズNで初期化した時に、引数0以上N-1以下でアクセスする
+  // 1-indexedの関数は、サイズNで初期化した時に、引数1以上N以下でアクセスする
+
   // 初期化 O(N)
   void set0(int i, X x) { dat[i + n - 1] = x; }  //  i: 0-indexed. dat[n-1]~dat[2n-2]に値が入る
   void set1(int i, X x) { set0(i - 1, x); }  // i: 1-indexed

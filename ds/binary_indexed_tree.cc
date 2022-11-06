@@ -20,6 +20,9 @@ template<class T> struct binary_indexed_tree {
     N = n;
     bit.resize(N + 1, 0);
   }
+  // 0-indexedの関数は、サイズNで初期化した時に、引数0以上N-1以下でアクセスする
+  // 1-indexedの関数は、サイズNで初期化した時に、引数1以上N以下でアクセスする
+
   // Add x to a[k], O(logN)
   // k: 1-indexed
   void add1(int k, T x) {
