@@ -1,7 +1,8 @@
 // https://atcoder.jp/contests/abc138/tasks/abc138_d
 // https://github.com/drken1215/book_algorithm_solution/blob/master/codes/chap13/code_13_2.cpp
 
-// Segfault for N ~= 105000
+// Please increase stack size by `ulimit -s 1048576` before running this.
+// Otherwise, segfault for N ~= 105000
 
 #include <iostream>
 #include <vector>
@@ -21,7 +22,6 @@ void dfs(int u, int value) {
     if (seen[v]) {
       continue;
     }
-    cout << "v=" << v << endl;
     dfs(v, value);
   }
   value -= X[u];
