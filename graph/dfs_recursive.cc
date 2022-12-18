@@ -14,10 +14,10 @@ vector<int> X;
 vector<int> ans;
 
 void dfs(int u, int value) {
-  seen[u] = true;
+  seen[u] = true;  // 訪問済(訪問完了)
   value += X[u];
   ans[u] = value;
-  for (size_t i = 0; i < graph[u].size(); i++) {
+  for (size_t i = 0; i < graph[u].size(); i++) {  // 訪問先の候補
     int v = graph[u][i];
     if (seen[v]) {
       continue;
