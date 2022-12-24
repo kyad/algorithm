@@ -9,7 +9,7 @@
 using namespace std;
 
 vector<vector<int> > graph;
-vector<bool> seen;
+vector<bool> seen;  // 探索完了フラグ
 vector<int> X;
 vector<int> ans;
 
