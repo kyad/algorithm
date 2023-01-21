@@ -21,7 +21,7 @@ int bfs(const vector<vector<int> > &graph, int s, int t) {
 	dist[x] = dist[v] + 1;
 	todo.push(x);
       }
-      if (dist[x] == dist[v] + 1) {
+      if (dist[x] == dist[v] + 1) {  // 前に、vと同じ距離のノードからxに訪れていた場合の処理
 	count[x] += count[v];
 	count[x] %= 1000000007;  // MOD
       }
