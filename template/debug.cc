@@ -1,7 +1,9 @@
 #include <iostream>
 using namespace std;
 
+#if 1
 // debug
+#include <iostream>
 #include <algorithm>
 #include <map>
 #include <queue>
@@ -9,18 +11,27 @@ using namespace std;
 #include <stack>
 #include <tuple>
 #include <vector>
-#define print1(a) std::cout << #a << '=' << a << std::endl;
-#define print2(a, b) print1(a); print1(b);
-#define print3(a, b, c) print1(a); print2(b, c);
-#define print4(a, b, c, d) print1(a); print3(b, c, d);
-#define print5(a, b, c, d, e) print1(a); print4(b, c, d, e);
-#define print6(a, b, c, d, e, f) print1(a); print5(b, c, d, e, f);
-#define print7(a, b, c, d, e, f, g) print1(a); print6(b, c, d, e, f, g);
-#define print8(a, b, c, d, e, f, g, h) print1(a); print7(b, c, d, e, f, g, h);
-#define print_select(a, b, c, d, e, f, g, h, i, ...) i
-#define print(...) print_select(__VA_ARGS__, print8, print7, print6, print5, print4, print3, print2, print1)(__VA_ARGS__)
-template<class T> ostream& operator<<(ostream& os, const vector<T> &v) { int MOD = -1; size_t N = v.size(); os << '[';
-  for (size_t i = 0; i < N; i++) { os << v[i];
+using namespace std;
+#define hr std::cout << "----------------" << std::endl;
+#define hr2 std::cout << "================" << std::endl;
+#define print0(a, c) std::cout << #a << '=' << a << c;
+#define print1(a) print0(a, '\n');
+#define print2(a, b) print0(a, '\t'); print1(b);
+#define print3(a, b, c) print0(a, '\t'); print2(b, c);
+#define print4(a, b, c, d) print0(a, '\t'); print3(b, c, d);
+#define print5(a, b, c, d, e) print0(a, '\t'); print4(b, c, d, e);
+#define print6(a, b, c, d, e, f) print0(a, '\t'); print5(b, c, d, e, f);
+#define print7(a, b, c, d, e, f, g) print0(a, '\t'); print6(b, c, d, e, f, g);
+#define print8(a, b, c, d, e, f, g, h) print0(a, '\t'); print7(b, c, d, e, f, g, h);
+#define print9(a, b, c, d, e, f, g, h, i) print0(a, '\t'); print8(b, c, d, e, f, g, h, i);
+#define print10(a, b, c, d, e, f, g, h, i, j) print0(a, '\t'); print9(b, c, d, e, f, g, h, i, j);
+#define print_select(a, b, c, d, e, f, g, h, i, j, k, ...) k
+#define print(...) print_select(__VA_ARGS__, print10, print9, print8, print7, print6, print5, print4, print3, print2, print1)(__VA_ARGS__)
+template<class T> ostream& operator<<(ostream& os, const vector<T> &v) { int MOD = -1; int N = v.size(); os << '[';
+  for (int i = 0; i < N; i++) {
+    //os << "["<< i << "]=";
+    os << v[i];
+    //if (abs(v[i]) == 4e18) { if (v[i] < 0) {os << '-'; } os << "inf"; } else { os << v[i]; }
     if (i == N - 1) { continue; }
     else if (MOD > 0 && i % MOD == (MOD - 1)) { os << '\n'; }
     else { os << ' '; }
@@ -48,6 +59,7 @@ template<class T> ostream& operator<<(ostream& os, const deque<T> &dq) {
   vector<T> v; for (auto it = dq.begin(); it != dq.end(); it++) { v.push_back(*it); } os << v; return os; }
 template<class T> ostream& operator<<(ostream& os, const stack<T> &s) {
   vector<T> v; stack<T> _s(s); while (!_s.empty()) { v.push_back(_s.top()); _s.pop(); } reverse(v.begin(), v.end()); os << v; return os; }
+#endif
 
 // bit
 #include <bitset>
