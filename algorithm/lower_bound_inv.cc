@@ -4,7 +4,7 @@
 #include <vector>
 using namespace std;
 
-// v.lower_bound(x): vの中で、x以上の最小のイテレータを返す。
+// lower_bound(v.begin(), v.end(), x): vの中で、x以上の最小のイテレータを返す。
 // lower_bound_inv(minus_v, x): vの中で、x以下の最大の値を返す。
 // minus_v配列vに逆の符号を付けてソートしたもの。
 // 計算量: O(logN)
