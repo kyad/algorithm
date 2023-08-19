@@ -19,6 +19,9 @@ int main() {
     graph[A].push_back(B);
   }
   // Topological sort
+  // 入力：uがvに依存する時、vからuに有向辺を張ったグラフ(uとvの向きに注意)。
+  // 出力：先にやるべきタスクの順にノード番号を返す。
+  //priority_queue<int> todo;
   priority_queue<int, vector<int>, greater<int> > todo;  // Lexical order
   for (int n = 0; n < N; n++) {
     if (indeg.at(n) == 0) {
