@@ -1,4 +1,4 @@
-// https://atcoder.jp/contests/arc157/tasks/arc157_b
+// https://atcoder.jp/contests/typical90/tasks/typical90_cf
 
 #include <algorithm>
 #include <cassert>
@@ -6,6 +6,12 @@
 #include <vector>
 using namespace std;
 
+/**
+ * ランレングス符号化
+ * 計算量: O(N)
+ * \param[in] A: 符号化対象のvector
+ * \return vector<pair<int, T> > : 符号化結果
+ */
 template<class T> vector<pair<int, T> > runlength(vector<T> A) {
   vector<pair<int, T> > ans;
   if (A.empty()) {
@@ -28,6 +34,12 @@ template<class T> vector<pair<int, T> > runlength(vector<T> A) {
   return ans;
 }
 
+/**
+ * 文字列に対するランレングス符号化
+ * 計算量: O(N)
+ * \param[in] S: 符号化対象の文字列
+ * \return vector<pair<int, char> > : 符号化結果
+ */
 vector<pair<int, char> > runlength(string S) {
   vector<char> A(S.size());
   for (size_t i = 0; i < S.size(); i++) {
@@ -36,75 +48,19 @@ vector<pair<int, char> > runlength(string S) {
   return runlength(A);
 }
 
-int solve(int N, int K, string S) {
-  int n_X = count(S.begin(), S.end(), 'X');
-  if (n_X < K) {
-    string T(S);
-    for (int n = 0; n < N; n++) {
-      T[n] = (S[n] == 'X' ? 'Y' : 'X');
-    }
-    return solve(N, N - K, T);
-  }
-
-  if (n_X == N) {
-    if (K == 0) {
-      return 0;
-    } else {
-      return K - 1;
-    }
-  }
-
-  vector<pair<int, char> > run = runlength(S);
-  int M = run.size();
-
-  // init
-  int ans = 0;
-  for (int m = 0; m < M; m++) {
-    int l = run[m].first;
-    char c = run[m].second;
-    if (c == 'Y') {
-      ans += l - 1;
-    }
-  }
-  // mid
-  auto solve_mid = [&](vector<int> X) {
-    for (int l : X) {
-      if (K <= 0) {
-        break;
-      }
-      int take = min(K, l);
-      int score = take + (take == l ? 1 : 0);
-      ans += score;
-      K -= take;
-    }
-  };
-
-  // X --> Y
-  vector<int> Xedge;
-  vector<int> Xmid;
-  for (int m = 0; m < M; m++) {
-    int l = run[m].first;
-    char c = run[m].second;
-    if (c != 'X') {
-      continue;
-    }
-    bool edge = (m == 0 || m == M - 1);
-    if (!edge) {
-      Xmid.push_back(l);
-    }
-  }
-  sort(Xmid.begin(), Xmid.end());
-  solve_mid(Xmid);
-  ans += K;
-  return ans;
+long long comb2(long long N) {
+  return N * (N - 1) / 2;
 }
 
 int main() {
-  int N, K;
-  cin >> N >> K;
+  long long N;
   string S;
-  cin >> S;
-  int ans = solve(N, K, S);
+  cin >> N >> S;
+  long long ans = comb2(N);
+  vector<pair<int, char> > r = runlength(S);
+  for (auto [n, c] : r) {
+    ans -= comb2(n);
+  }
   cout << ans << endl;
   return 0;
 }
