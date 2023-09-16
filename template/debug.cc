@@ -38,6 +38,7 @@ template<class T> ostream& operator<<(ostream& os, const vector<T> &v) { int MOD
   } os << ']'; return os; }
 template<class T1, class T2> ostream& operator<<(ostream& os, const pair<T1, T2> &p) { os << "(" << p.first << ", " << p.second << ")"; return os; }
 template<class T1, class T2, class T3> ostream& operator<<(ostream& os, const tuple<T1, T2, T3> &t) { os << "(" << get<0>(t) << ", " << get<1>(t) << ", " << get<2>(t) << ")"; return os; }
+template<class T1, class T2, class T3, class T4> ostream& operator<<(ostream& os, const tuple<T1, T2, T3, T4> &t) { os << "(" << get<0>(t) << ", " << get<1>(t) << ", " << get<2>(t) << ", " << get<3>(t) << ")"; return os; }
 template<class T> ostream& operator<<(ostream& os, const set<T> &s) {
   vector<T> v; for (typename set<T>::iterator it = s.begin(); it != s.end(); it++) { v.push_back(*it); };
   os << v; return os; }
