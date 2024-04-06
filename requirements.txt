@@ -20,3 +20,4 @@ polars==0.15.15
 lightgbm==3.3.1
 gmpy2==2.1.5
 numba==0.57.0
+python-lsp-server[all]==1.8.2
