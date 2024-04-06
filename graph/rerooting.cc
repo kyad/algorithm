@@ -28,7 +28,7 @@ vector<vector<Data> > graph;
 // iを根と思った時、iからスタートした時の最大値
 vector<pair<int, long long> > dp;
 void dfs0(int u, int parent) {
-  dp[u] = make_pair(1, 0);  // 葉の値。
+  dp[u] = make_pair(1, 0);  // 葉の値。●
   for (auto [v, w] : graph[u]) {
     if (v == parent) {
       continue;
@@ -66,12 +66,12 @@ void dfs1(int u, int parent) {
     }
     // Rerooting
     // Update dp[u]
-    dp[u] = make_pair(1, 0);  // 葉の値。●
+    dp[u] = make_pair(1, 0);  // 葉の値。dp_topではない。●
     if (k >= 1) {  // 左からの累積和でまとめて更新する。
-      dp_apply(dp[u], left[k - 1]);
+      dp_apply(dp[u], left[k - 1]);  // dp_topではない。
     }
     if (k <= K - 2) {  // 右からの累積和でまとめて更新する。
-      dp_apply(dp[u], right[k + 1]);
+      dp_apply(dp[u], right[k + 1]);  // dp_topではない。
     }
     // Update dp[v]
     dfs1(v, u);
